@@ -20,6 +20,9 @@ RUN composer install --no-interaction --prefer-dist --optimize-autoloader
 RUN chown -R www-data:www-data /var/www \
     && chmod -R 755 /var/www/storage
 
+# Copy .env.example to .env if it doesn't exist
+RUN if [ ! -f .env ]; then cp .env.example .env; fi
+
 # Run artisan setup commands automatically
 CMD php artisan config:cache && \
     php artisan key:generate --force && \
